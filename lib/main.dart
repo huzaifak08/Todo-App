@@ -1,0 +1,57 @@
+import 'package:todo_app/exports.dart';
+import 'package:todo_app/firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: FirebaseOptions(
+  //         apiKey: Constants.apiKey,
+  //         appId: Constants.appId,
+  //         messagingSenderId: Constants.messagingSenderId,
+  //         projectId: Constants.projectId),
+  //   );
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AuthBloc()),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+              textTheme: TextTheme(
+                titleLarge: TextStyle(
+                  fontSize: getWidth(context) * 0.07,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.secondaryColor,
+                ),
+                titleMedium: TextStyle(
+                  fontSize: getWidth(context) * 0.05,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.secondaryColor,
+                ),
+                titleSmall: TextStyle(
+                  fontSize: getWidth(context) * 0.04,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.secondaryColor,
+                ),
+              )),
+          home: const SplashScreen(),
+        ));
+  }
+}
