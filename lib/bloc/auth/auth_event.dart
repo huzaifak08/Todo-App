@@ -9,7 +9,8 @@ abstract class AuthEvent extends Equatable {
 
 class Register extends AuthEvent {
   final UserModel user;
-  const Register({required this.user});
+  final File file;
+  const Register({required this.user, required this.file});
 
   @override
   List<Object> get props => [user];
@@ -33,3 +34,7 @@ class ToggleVisiblity extends AuthEvent {
   @override
   List<Object> get props => [isVisible];
 }
+
+class CameraCapture extends AuthEvent {}
+
+class GalleryImagePicker extends AuthEvent {}

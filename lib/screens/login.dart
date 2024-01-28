@@ -11,6 +11,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     emailController = TextEditingController();
@@ -33,29 +35,39 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: getWidth(context) * 0.01),
-          child: Column(
-            children: [
-              Image.asset('assets/Icon-todo.png'),
-              CustomTextField(
-                myController: emailController,
-                onValidator: (value) {
-                  return '';
-                },
-                keyboardType: TextInputType.emailAddress,
-                hint: 'Enter Email Address',
-                obsecureText: false,
-                suffixIcon: const Icon(
-                  Icons.email,
-                  color: AppColors.primaryColor,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Image.asset('assets/Icon-todo.png'),
+                CustomTextField(
+                  myController: emailController,
+                  onValidator: (value) {
+                    return RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value!)
+                        ? null
+                        : 'Enter a valid Email';
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  hint: 'Enter Email Address',
+                  obsecureText: false,
+                  suffixIcon: const Icon(
+                    Icons.email,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
-              ),
-              SizedBox(height: getHeight(context) * 0.01),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  return CustomTextField(
+                SizedBox(height: getHeight(context) * 0.01),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return CustomTextField(
                       myController: passwordController,
                       onValidator: (value) {
-                        return '';
+                        if (passwordController.text.isEmpty ||
+                            passwordController.text.length < 6) {
+                          return 'Please enter a valid 6-digits password';
+                        }
+                        return null;
                       },
                       keyboardType: TextInputType.emailAddress,
                       hint: 'Enter Password',
@@ -71,63 +83,69 @@ class _LoginScreenState extends State<LoginScreen> {
                           context.read<AuthBloc>().add(
                               ToggleVisiblity(isVisible: !state.isVisible));
                         },
-                      ));
-                },
-              ),
-              SizedBox(height: getHeight(context) * 0.003),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Forgot Password? ',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
                 ),
-              ),
-              SizedBox(height: getHeight(context) * 0.01),
-              BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) {
-                  if (state.status == AuthStatus.success) {
-                    showSnackBar(context: context, message: state.message);
-                    nextScreenReplacement(
-                        context: context, page: const HomeScreen());
-                  }
-                },
-                builder: (context, state) {
-                  if (state.status == AuthStatus.loading) {
-                    return const CircularProgressIndicator();
-                  }
-                  return CustomButton(
-                    title: 'Login',
-                    onPressed: () {
-                      context.read<AuthBloc>().add(SignIn(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim()));
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: getHeight(context) * 0.01),
-              RichText(
-                text: TextSpan(
-                  text: "Don't have an account? ",
-                  style: Theme.of(context).textTheme.bodySmall,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "SignUp",
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          nextScreen(
-                              context: context, page: const SignUpScreen());
-                        },
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
+                SizedBox(height: getHeight(context) * 0.003),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot Password? ',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              )
-            ],
+                SizedBox(height: getHeight(context) * 0.01),
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state.status == AuthStatus.success) {
+                      showSnackBar(context: context, message: state.message);
+                      nextScreenReplacement(
+                          context: context, page: const HomeScreen());
+                    } else if (state.status == AuthStatus.failure) {
+                      showSnackBar(context: context, message: state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state.status == AuthStatus.loading) {
+                      return const CircularProgressIndicator();
+                    }
+                    return CustomButton(
+                      title: 'Login',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(SignIn(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim()));
+                        }
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: getHeight(context) * 0.01),
+                RichText(
+                  text: TextSpan(
+                    text: "Don't have an account? ",
+                    style: Theme.of(context).textTheme.bodySmall,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "SignUp",
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            nextScreen(
+                                context: context, page: const SignUpScreen());
+                          },
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
