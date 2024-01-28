@@ -1,4 +1,5 @@
 import 'package:todo_app/exports.dart';
+import 'package:todo_app/screens/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,11 +9,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  late TextEditingController nameController;
+  late TextEditingController phoneController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
   @override
   void initState() {
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     super.initState();
@@ -20,6 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -41,6 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: getWidth(context) * 0.3),
               SizedBox(height: getHeight(context) * 0.01),
               CustomTextField(
+                myController: nameController,
                 onValidator: (value) {
                   return '';
                 },
@@ -55,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: getHeight(context) * 0.01),
               CustomTextField(
+                myController: phoneController,
                 onValidator: (value) {
                   return '';
                 },
@@ -110,6 +119,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 listener: (context, state) {
                   if (state.status == AuthStatus.success) {
                     showSnackBar(context: context, message: state.message);
+                    nextScreenReplacement(
+                        context: context, page: const HomeScreen());
                   }
                 },
                 builder: (context, state) {
@@ -119,9 +130,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return CustomButton(
                     title: 'Register',
                     onPressed: () {
-                      context.read<AuthBloc>().add(Register(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim()));
+                      UserModel user = UserModel(
+                        name: nameController.text.trim(),
+                        phone: int.parse(phoneController.text.trim()),
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+
+                      context.read<AuthBloc>().add(Register(user: user));
                     },
                   );
                 },

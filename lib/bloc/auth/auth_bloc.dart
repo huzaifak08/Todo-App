@@ -16,8 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _register(Register event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    String message = await _authRepository.signUpUser(
-        email: event.email, password: event.password);
+    String message = await _authRepository.signUpUser(user: event.user);
 
     emit(state.copyWith(message: message, status: AuthStatus.success));
   }

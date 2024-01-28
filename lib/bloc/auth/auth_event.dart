@@ -8,12 +8,11 @@ abstract class AuthEvent extends Equatable {
 }
 
 class Register extends AuthEvent {
-  final String email;
-  final String password;
-  const Register({required this.email, required this.password});
+  final UserModel user;
+  const Register({required this.user});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [user];
 }
 
 class SignIn extends AuthEvent {

@@ -3,12 +3,11 @@ import 'package:todo_app/exports.dart';
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String> signUpUser(
-      {required String email, required String password}) async {
+  Future<String> signUpUser({required UserModel user}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: user.email,
+        password: user.password,
       );
       return 'Welcome to Todo';
     } on FirebaseAuthException catch (err) {

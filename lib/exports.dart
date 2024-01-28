@@ -1,4 +1,5 @@
 // Material:
+export 'dart:convert';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/gestures.dart';
@@ -17,9 +18,13 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:todo_app/bloc/auth/auth_bloc.dart';
 
 // Screens:
-export 'package:todo_app/screens/login.dart';
 export 'package:todo_app/screens/splash.dart';
+export 'package:todo_app/screens/login.dart';
 export 'package:todo_app/screens/signup.dart';
+export 'package:todo_app/screens/home.dart';
+
+// Models:
+export 'package:todo_app/models/user_model.dart';
 
 // Repositories:
 export 'package:todo_app/repositories/auth_repo.dart';
