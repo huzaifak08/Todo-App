@@ -20,8 +20,6 @@ class UserRepository {
           profilePic: snapshot['profilePic']);
     });
 
-    print(userData.name);
-
     return userData;
   }
 }

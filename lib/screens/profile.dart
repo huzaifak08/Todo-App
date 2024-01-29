@@ -1,7 +1,4 @@
-import 'package:todo_app/bloc/user/user_bloc.dart';
-import 'package:todo_app/components/custom_row.dart';
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/repositories/user_repo.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -24,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, state) {
           switch (state.userDataStatus) {
             case UserDataStatus.loading:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
 
             case UserDataStatus.success:
               return Column(

@@ -1,5 +1,4 @@
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/repositories/user_repo.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
