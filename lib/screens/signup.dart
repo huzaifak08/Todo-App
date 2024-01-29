@@ -13,6 +13,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
+  late FocusNode phoneFocusNode;
+  late FocusNode emailFocusNode;
+  late FocusNode passwordFocusNode;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -21,6 +25,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     phoneController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+
+    phoneFocusNode = FocusNode();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
     super.initState();
   }
 
@@ -30,6 +38,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     phoneController.dispose();
     emailController.dispose();
     passwordController.dispose();
+
+    phoneFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -92,6 +104,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
                   myController: nameController,
+                  onFiledSubmissionValue: (newValue) {
+                    if (newValue != null) {
+                      phoneFocusNode.requestFocus();
+                    }
+                  },
                   onValidator: (value) {
                     return RegExp(r"^[A-Za-z][^0-9]").hasMatch(value!)
                         ? null
@@ -107,7 +124,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
+                  focusNode: phoneFocusNode,
                   myController: phoneController,
+                  onFiledSubmissionValue: (newValue) {
+                    if (newValue != null) {
+                      emailFocusNode.requestFocus();
+                    }
+                  },
                   onValidator: (value) {
                     return RegExp(r"^[0-9]{8,}").hasMatch(value!)
                         ? null
@@ -123,7 +146,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
+                  focusNode: emailFocusNode,
                   myController: emailController,
+                  onFiledSubmissionValue: (newValue) {
+                    if (newValue != null) {
+                      passwordFocusNode.requestFocus();
+                    }
+                  },
                   onValidator: (value) {
                     return RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -143,6 +172,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     return CustomTextField(
+                      focusNode: passwordFocusNode,
                       myController: passwordController,
                       onValidator: (value) {
                         if (passwordController.text.isEmpty ||

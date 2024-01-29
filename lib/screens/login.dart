@@ -11,12 +11,16 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
+  late FocusNode passwordFocusNode;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
+
+    passwordFocusNode = FocusNode();
     super.initState();
   }
 
@@ -24,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -42,6 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Image.asset('assets/Icon-todo.png'),
                 CustomTextField(
                   myController: emailController,
+                  onFiledSubmissionValue: (newValue) {
+                    if (newValue != null) {
+                      passwordFocusNode.requestFocus();
+                    }
+                  },
                   onValidator: (value) {
                     return RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -61,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     return CustomTextField(
+                      focusNode: passwordFocusNode,
                       myController: passwordController,
                       onValidator: (value) {
                         if (passwordController.text.isEmpty ||
