@@ -7,12 +7,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository = AuthRepository();
 
   AuthBloc() : super(const AuthState()) {
+    on<CheckUserStatus>(_checkUserStatus);
     on<Register>(_register);
     on<SignIn>(_signIn);
     on<SignOut>(_signOut);
     on<ToggleVisiblity>(_toggleVisibility);
     on<CameraCapture>(_cameraCapture);
     on<GalleryImagePicker>(_galleryPicker);
+  }
+
+  void _checkUserStatus(CheckUserStatus event, Emitter<AuthState> emit) {
+    bool isLoggedIn = _authRepository.checkLoggedInStatus();
+    emit(state.copyWith(isLoggedIn: isLoggedIn));
   }
 
   void _register(Register event, Emitter<AuthState> emit) async {

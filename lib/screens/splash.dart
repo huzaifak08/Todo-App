@@ -10,17 +10,27 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3)).then((value) {
-      nextScreenReplacement(context: context, page: const LoginScreen());
-    });
+    context.read<AuthBloc>().add(CheckUserStatus());
+
+    Future.delayed(const Duration(seconds: 3));
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image.asset('assets/Icon-todo.png'),
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.isLoggedIn) {
+            nextScreenReplacement(context: context, page: const HomeScreen());
+          } else {
+            nextScreenReplacement(context: context, page: const LoginScreen());
+          }
+        },
+        child: Center(
+          child: Image.asset('assets/Icon-todo.png'),
+        ),
       ),
     );
   }

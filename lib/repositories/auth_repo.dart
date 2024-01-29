@@ -5,6 +5,19 @@ class AuthRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  bool checkLoggedInStatus() {
+    try {
+      if (_firebaseAuth.currentUser != null &&
+          _firebaseAuth.currentUser!.uid.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
   Future<String> signUpUser({required UserModel user}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
