@@ -16,9 +16,15 @@ class CustomRow extends StatelessWidget {
         ListTile(
           title: Text(
             title,
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(color: AppColors.primaryTextColor),
           ),
-          trailing: Text(value),
+          trailing: Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
         const Divider(),
       ],

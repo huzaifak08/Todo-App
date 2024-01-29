@@ -1,4 +1,5 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:todo_app/bloc/user/user_bloc.dart';
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthBloc()),
+          BlocProvider(create: (_) => UserBloc()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

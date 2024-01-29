@@ -1,4 +1,5 @@
 import 'package:todo_app/exports.dart';
+import 'package:todo_app/screens/nav_bar.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -206,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         state.file != null) {
                       showSnackBar(context: context, message: state.message);
                       nextScreenReplacement(
-                          context: context, page: const HomeScreen());
+                          context: context, page: const TodoNavigationBar());
                     }
                   },
                   builder: (context, state) {

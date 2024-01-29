@@ -1,4 +1,5 @@
 import 'package:todo_app/exports.dart';
+import 'package:todo_app/screens/nav_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (state.status == AuthStatus.success) {
                       showSnackBar(context: context, message: state.message);
                       nextScreenReplacement(
-                          context: context, page: const HomeScreen());
+                          context: context, page: const TodoNavigationBar());
                     } else if (state.status == AuthStatus.failure) {
                       showSnackBar(context: context, message: state.message);
                     }
