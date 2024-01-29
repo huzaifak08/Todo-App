@@ -1,10 +1,15 @@
-# todo_app
+# Todo APP
 
-A new Flutter project.
+This is new Flutter and Firebase Project in which we will use purely Bloc State management.
 
-## Getting Started
+## Methodologies and Steps:
 
-This project is a starting point for a Flutter application.
+--> CI/CD using Github Actions.
+--> Firebase Sign UP.
+--> Firebase Login.
+--> Firebase SignOut.
+--> Firebase App Check.
+--> Firebase Check User Loggedin Status.
 
 A few resources to get you started if this is your first Flutter project:
 
