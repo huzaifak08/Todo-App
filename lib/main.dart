@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
 
@@ -16,6 +17,12 @@ void main() async {
   // } else {
   //   await Firebase.initializeApp();
   // }
+
+  FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.instance;
+  firebaseAppCheck.activate(androidProvider: AndroidProvider.debug);
+  firebaseAppCheck.getToken().then(
+        (value) => debugPrint('Token: $value'),
+      );
 
   runApp(const MyApp());
 }
