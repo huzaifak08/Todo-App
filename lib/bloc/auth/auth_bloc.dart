@@ -56,9 +56,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _signOut(SignOut event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    String message = await _authRepository.signOutUser();
-
-    emit(state.copyWith(message: message, status: AuthStatus.success));
+    await _authRepository.signOutUser().then((value) {
+      emit(state.copyWith(message: value, status: AuthStatus.success));
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(
+          message: error.toString(), status: AuthStatus.failure));
+    });
   }
 
   void _toggleVisibility(ToggleVisiblity event, Emitter<AuthState> emit) {

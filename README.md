@@ -7,7 +7,6 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> CI/CD using Github Actions  
 --> Firebase Sign UP.  
 --> Firebase Login.  
---> Firebase SignOut.  
 --> Auth Bloc.  
 --> Firebase App Check.  
 --> Firebase Check User Loggedin Status.  
@@ -15,4 +14,5 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Focus Nodes.
 --> Persistant Bottom Navigation Bar.  
 --> User Bloc (To extract Data of user).  
---> Profile Screen.
+--> Profile Screen.  
+--> Firebase SignOut.
