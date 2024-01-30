@@ -67,6 +67,23 @@ class AuthRepository {
     }
   }
 
+  Future<String> changePassword({required String password}) async {
+    try {
+      final user = _firebaseAuth.currentUser;
+
+      if (user != null) {
+        await user.updatePassword(password);
+        return "Password Changes Successfully";
+      } else {
+        return "Please Login First";
+      }
+    } on FirebaseAuthException catch (err) {
+      throw Exception(err.message.toString());
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
   Future<String> saveUserData(
       {required UserModel user, required File picFile}) async {
     try {

@@ -9,6 +9,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final passwordController = TextEditingController();
+
   @override
   void initState() {
     context.read<UserBloc>().add(FetchUserData());
@@ -26,74 +28,126 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Column(
-        children: [
-          SizedBox(height: getHeight(context) * 0.04),
-          BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              switch (state.userDataStatus) {
-                case UserDataStatus.initial:
-                  return const Center(child: Text('Please Wait...'));
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: getHeight(context) * 0.04),
+            BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                switch (state.userDataStatus) {
+                  case UserDataStatus.initial:
+                    return const Center(child: Text('Please Wait...'));
 
-                case UserDataStatus.failure:
-                  return const Center(child: Text('Please refresh page...'));
+                  case UserDataStatus.failure:
+                    return const Center(child: Text('Please refresh page...'));
 
-                case UserDataStatus.loading:
-                  return const Center(child: CircularProgressIndicator());
+                  case UserDataStatus.loading:
+                    return const Center(child: CircularProgressIndicator());
 
-                case UserDataStatus.success:
-                  return Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(getWidth(context) * 0.14),
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.primaryColor,
-                          radius: 50,
-                          child: Image.network(
-                            state.userModel!.profilePic,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress != null) {
-                                return const Center(
-                                  child: CircularProgressIndicator(
-                                      color: AppColors.secondaryColor),
-                                );
-                              }
-                              return child;
-                            },
+                  case UserDataStatus.success:
+                    return Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(getWidth(context) * 0.14),
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.primaryColor,
+                            radius: 50,
+                            child: Image.network(
+                              state.userModel!.profilePic,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress != null) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                        color: AppColors.secondaryColor),
+                                  );
+                                }
+                                return child;
+                              },
+                            ),
                           ),
                         ),
+                        CustomRow(title: 'Name', value: state.userModel!.name),
+                        CustomRow(
+                            title: 'Phone',
+                            value: state.userModel!.phone.toString()),
+                        CustomRow(
+                            title: 'Email', value: state.userModel!.email),
+                      ],
+                    );
+                }
+              },
+            ),
+            SizedBox(height: getHeight(context) * 0.04),
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state.status == AuthStatus.success) {
+                  // showSnackBar(context: context, message: state.message);
+                  nextScreenReplacement(
+                      context: context, page: const LoginScreen());
+                  PersistentNavBarNavigator.pushNewScreen(context,
+                      screen: const LoginScreen(), withNavBar: false);
+                } else if (state.message.isNotEmpty) {
+                  showSnackBar(context: context, message: state.message);
+                }
+              },
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButton(
+                      width: getWidth(context) * 0.6,
+                      title: 'Change Password',
+                      onPressed: () => changePasswordDialog(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(ChangePassword(
+                              password: passwordController.text));
+
+                          // Navigator.pop(context);
+                        },
                       ),
-                      CustomRow(title: 'Name', value: state.userModel!.name),
-                      CustomRow(
-                          title: 'Phone',
-                          value: state.userModel!.phone.toString()),
-                      CustomRow(title: 'Email', value: state.userModel!.email),
-                    ],
-                  );
-              }
-            },
-          ),
-          SizedBox(height: getHeight(context) * 0.04),
-          BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state.status == AuthStatus.success) {
-                // showSnackBar(context: context, message: state.message);
-                nextScreenReplacement(
-                    context: context, page: const LoginScreen());
-                PersistentNavBarNavigator.pushNewScreen(context,
-                    screen: const LoginScreen(), withNavBar: false);
-              }
-            },
-            builder: (context, state) {
-              return CustomButton(
-                title: 'Sign Out',
-                onPressed: () {
-                  context.read<AuthBloc>().add(SignOut());
-                },
-              );
-            },
-          ),
+                    ),
+                    CustomButton(
+                      title: 'Sign Out',
+                      onPressed: () {
+                        context.read<AuthBloc>().add(SignOut());
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  changePasswordDialog({required VoidCallback onPressed}) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Change Password'),
+        content: CustomTextField(
+          myController: passwordController,
+          keyboardType: TextInputType.name,
+          obsecureText: false,
+          hint: 'Enter Password here',
+          onValidator: (value) {
+            return null;
+          },
+          onChanged: (value) {},
+        ),
+        actions: [
+          ElevatedButton.icon(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.cancel),
+              label: const Text('Cancel')),
+          ElevatedButton.icon(
+              onPressed: onPressed,
+              icon: const Icon(Icons.password),
+              label: const Text('Submit')),
         ],
       ),
     );

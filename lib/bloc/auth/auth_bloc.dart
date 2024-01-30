@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignIn>(_signIn);
     on<SignOut>(_signOut);
     on<ForgotPassword>(_forgotPassword);
+    on<ChangePassword>(_changePassword);
     on<ToggleVisiblity>(_toggleVisibility);
     on<CameraCapture>(_cameraCapture);
     on<GalleryImagePicker>(_galleryPicker);
@@ -70,6 +71,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(isEmailSend: true, message: value));
     }).onError((error, stackTrace) {
       emit(state.copyWith(isEmailSend: false, message: error.toString()));
+    });
+  }
+
+  void _changePassword(ChangePassword event, Emitter<AuthState> emit) async {
+    await _authRepository
+        .changePassword(password: event.password)
+        .then((value) {
+      emit(state.copyWith(message: value));
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(message: error.toString()));
     });
   }
 
