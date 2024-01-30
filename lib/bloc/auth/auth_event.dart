@@ -29,6 +29,14 @@ class SignIn extends AuthEvent {
 
 class SignOut extends AuthEvent {}
 
+class ForgotPassword extends AuthEvent {
+  final String email;
+  const ForgotPassword({required this.email});
+
+  @override
+  List<Object> get props => [email];
+}
+
 class ToggleVisiblity extends AuthEvent {
   final bool isVisible;
   const ToggleVisiblity({required this.isVisible});

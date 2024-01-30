@@ -56,6 +56,17 @@ class AuthRepository {
     }
   }
 
+  Future<String> forgotPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return "We've send you an email, Please open your email and click the link";
+    } on FirebaseAuthException catch (err) {
+      throw Exception(err.message.toString());
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
   Future<String> saveUserData(
       {required UserModel user, required File picFile}) async {
     try {

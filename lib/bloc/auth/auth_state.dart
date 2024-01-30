@@ -8,6 +8,7 @@ class AuthState extends Equatable {
   final AuthStatus status;
   final bool isVisible;
   final XFile? file;
+  final bool isEmailSend;
   const AuthState({
     this.isLoggedIn = false,
     this.email = '',
@@ -16,6 +17,7 @@ class AuthState extends Equatable {
     this.status = AuthStatus.initial,
     this.isVisible = false,
     this.file,
+    this.isEmailSend = false,
   });
 
   AuthState copyWith({
@@ -26,6 +28,7 @@ class AuthState extends Equatable {
     AuthStatus? status,
     bool? isVisible,
     XFile? file,
+    bool? isEmailSend,
   }) {
     return AuthState(
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
@@ -35,10 +38,19 @@ class AuthState extends Equatable {
       status: status ?? this.status,
       isVisible: isVisible ?? this.isVisible,
       file: file ?? this.file,
+      isEmailSend: isEmailSend ?? this.isEmailSend,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [isLoggedIn, email, password, message, status, isVisible, file];
+  List<Object?> get props => [
+        isLoggedIn,
+        email,
+        password,
+        message,
+        status,
+        isVisible,
+        file,
+        isEmailSend
+      ];
 }

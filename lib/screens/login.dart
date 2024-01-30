@@ -103,11 +103,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: getHeight(context) * 0.003),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    'Forgot Password? ',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.bold),
+                  child: BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      print('MEssage Outside: ${state.message}');
+                      if (state.isEmailSend) {
+                        print('MEssage Inside: ${state.message}');
+                        showSnackBar(context: context, message: state.message);
+                      }
+                    },
+                    builder: (context, state) {
+                      return InkWell(
+                        onTap: () {
+                          context.read<AuthBloc>().add(ForgotPassword(
+                              email: emailController.text.trim()));
+                        },
+                        child: Text(
+                          'Forgot Password? ',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
