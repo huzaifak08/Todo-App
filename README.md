@@ -26,4 +26,3 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Persistant Bottom Navigation Bar.  
 --> User Bloc (To extract Data of user).  
 --> Profile Screen.  
- 
