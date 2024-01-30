@@ -105,9 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.centerRight,
                   child: BlocConsumer<AuthBloc, AuthState>(
                     listener: (context, state) {
-                      print('MEssage Outside: ${state.message}');
                       if (state.isEmailSend) {
-                        print('MEssage Inside: ${state.message}');
                         showSnackBar(context: context, message: state.message);
                       }
                     },
