@@ -1,4 +1,5 @@
 import 'package:todo_app/exports.dart';
+import 'package:todo_app/screens/add_todo.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,6 +9,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.primaryColor,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          nextScreen(context: context, page: const AddTodoScreen());
+        },
       ),
     );
   }

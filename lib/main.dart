@@ -1,3 +1,4 @@
+import 'package:todo_app/bloc/todo/todo_bloc.dart';
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => AuthBloc()),
           BlocProvider(create: (_) => UserBloc()),
+          BlocProvider(create: (_) => TodoBloc()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
