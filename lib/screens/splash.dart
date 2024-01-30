@@ -11,9 +11,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.read<AuthBloc>().add(CheckUserStatus());
-
-    Future.delayed(const Duration(seconds: 3));
+    Future.delayed(const Duration(seconds: 3)).then((value) {
+      context.read<AuthBloc>().add(CheckUserStatus());
+    });
 
     super.initState();
   }

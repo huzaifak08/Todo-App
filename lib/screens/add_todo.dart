@@ -64,7 +64,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                         TodoModel newTodo = TodoModel(
                           title: _titleController.text,
                           description: _descriptionController.text,
-                          createdAt: DateTime.now().toString(),
+                          createdAt: DateTime.now(),
                         );
 
                         context

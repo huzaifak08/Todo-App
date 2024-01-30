@@ -14,3 +14,5 @@ class SaveTodo extends TodoEvent {
   @override
   List<Object> get props => [todoModel];
 }
+
+class FetchTodo extends TodoEvent {}

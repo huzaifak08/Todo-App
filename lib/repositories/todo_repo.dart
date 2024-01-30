@@ -24,4 +24,12 @@ class TodoRepository {
       throw Exception(err.toString());
     }
   }
+
+  Stream<QuerySnapshot> getTodos() {
+    return _firestore
+        .collection('todos')
+        .where('uid', isEqualTo: _firebaseAuth.currentUser!.uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
 }

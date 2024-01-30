@@ -5,7 +5,7 @@ class TodoModel extends Equatable {
   final String? uid;
   final String title;
   final String description;
-  final String createdAt;
+  final DateTime createdAt;
   const TodoModel({
     this.docId,
     this.uid,
@@ -19,7 +19,7 @@ class TodoModel extends Equatable {
     ValueGetter<String?>? uid,
     String? title,
     String? description,
-    String? createdAt,
+    DateTime? createdAt,
   }) {
     return TodoModel(
       docId: docId != null ? docId() : this.docId,
@@ -36,7 +36,7 @@ class TodoModel extends Equatable {
       'uid': uid,
       'title': title,
       'description': description,
-      'createdAt': createdAt,
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
@@ -46,7 +46,18 @@ class TodoModel extends Equatable {
       uid: map['uid'],
       title: map['title'] ?? '',
       description: map['description'] ?? '',
-      createdAt: map['createdAt'] ?? '',
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+    );
+  }
+
+  factory TodoModel.fromDocument(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    return TodoModel(
+      docId: document.id,
+      uid: data['uid'],
+      title: data['title'] ?? '',
+      description: data['description'] ?? '',
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
     );
   }
 
