@@ -4,6 +4,7 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 
 ## Methodologies and Steps:
 
+### CI/CD
 --> CI/CD using Github Actions  
 --> Firebase Sign UP.  
 --> Firebase Login.  
@@ -15,4 +16,6 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Persistant Bottom Navigation Bar.  
 --> User Bloc (To extract Data of user).  
 --> Profile Screen.  
---> Firebase SignOut.
+--> Firebase SignOut.  
+--> Forgot Password.  
+--> Change Password.  
