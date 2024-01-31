@@ -1,6 +1,4 @@
-import 'package:todo_app/bloc/todo/todo_bloc.dart';
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/models/todo_model.dart';
 
 class UpdateTodoScreen extends StatefulWidget {
   final TodoModel todoModel;

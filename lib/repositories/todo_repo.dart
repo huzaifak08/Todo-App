@@ -1,5 +1,4 @@
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/models/todo_model.dart';
 
 class TodoRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

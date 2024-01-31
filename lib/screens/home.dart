@@ -1,8 +1,4 @@
-import 'package:todo_app/bloc/todo/todo_bloc.dart';
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/models/todo_model.dart';
-import 'package:todo_app/screens/add_todo.dart';
-import 'package:todo_app/screens/update_todo.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,9 +8,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  NotificationServices notificationServices = NotificationServices();
+
   @override
   void initState() {
     context.read<TodoBloc>().add(FetchTodo());
+
+    notificationServices.requestNotificationPermission();
+
+    // Token:
+    notificationServices.getDeviceToken().then((value) {
+      debugPrint('Device Token: $value');
+    });
+
+    // Refresh:
+    notificationServices.isTokenRefresh();
+
+    notificationServices.firebaseInit(context);
+
+    notificationServices.setupInteractMessage(context);
+
+    notificationServices.triggerInAppEvent();
 
     super.initState();
   }

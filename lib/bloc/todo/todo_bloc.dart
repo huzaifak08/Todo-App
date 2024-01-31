@@ -1,6 +1,4 @@
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/models/todo_model.dart';
-import 'package:todo_app/repositories/todo_repo.dart';
 
 part 'todo_event.dart';
 part 'todo_state.dart';

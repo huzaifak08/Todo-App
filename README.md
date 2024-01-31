@@ -14,13 +14,17 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Firebase Login.
 --> Firebase SignOut.  
 --> Forgot Password.  
---> Change Password.
+--> Change Password.  
 --> Firebase App Check.  
 --> Firebase Check User Loggedin Status.  
 --> Firestore User Data Post and Get.  
 --> Firestore Todo Save.
 --> Firestore Todo Get Stream.  
---> Firestore Todo Delete.
+--> Firestore Todo Delete.  
+--> Firebase Notification.  
+--> Firebase In-App Notifications.  
+--> Firebase Notification Trigger.  
+--> Firebase Notification Redirect to Page.
 
 ### Bloc:
 
