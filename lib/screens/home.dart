@@ -38,6 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListTile(
                 title: Text(todo.title),
                 subtitle: Text(todo.description),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    context
+                        .read<TodoBloc>()
+                        .add(DeleteTodo(docId: todo.docId!));
+                  },
+                ),
               );
             },
           );

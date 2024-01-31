@@ -11,6 +11,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(const TodoState()) {
     on<SaveTodo>(_saveTodo);
     on<FetchTodo>(_fetchTodo);
+    on<DeleteTodo>(_deleteTodo);
   }
 
   void _saveTodo(SaveTodo event, Emitter<TodoState> emit) async {
@@ -37,5 +38,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
       emit(state.copyWith(todoList: todoList));
     }
+  }
+
+  void _deleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
+    await _todoRepository.deleteTodo(docId: event.docId);
   }
 }

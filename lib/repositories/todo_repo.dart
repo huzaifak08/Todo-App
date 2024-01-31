@@ -32,4 +32,8 @@ class TodoRepository {
         .orderBy('createdAt', descending: true)
         .snapshots();
   }
+
+  Future<void> deleteTodo({required String docId}) async {
+    await _firestore.collection('todos').doc(docId).delete();
+  }
 }
