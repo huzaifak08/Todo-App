@@ -19,6 +19,8 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Firebase Check User Loggedin Status.  
 --> Firestore User Data Post and Get.  
 --> Firestore Todo Save.
+--> Firestore Todo Get Stream.  
+--> Firestore Todo Delete.
 
 ### Bloc:
 

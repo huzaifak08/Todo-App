@@ -2,6 +2,7 @@ import 'package:todo_app/bloc/todo/todo_bloc.dart';
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/models/todo_model.dart';
 import 'package:todo_app/screens/add_todo.dart';
+import 'package:todo_app/screens/update_todo.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,6 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
               TodoModel todo = state.todoList[index];
 
               return ListTile(
+                onTap: () {
+                  TodoModel todo = TodoModel(
+                      docId: state.todoList[index].docId,
+                      title: state.todoList[index].title,
+                      description: state.todoList[index].description,
+                      createdAt: state.todoList[index].createdAt);
+
+                  nextScreen(
+                    context: context,
+                    page: UpdateTodoScreen(
+                      todoModel: todo,
+                    ),
+                  );
+                },
                 title: Text(todo.title),
                 subtitle: Text(todo.description),
                 trailing: IconButton(

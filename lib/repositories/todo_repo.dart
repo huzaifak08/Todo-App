@@ -36,4 +36,14 @@ class TodoRepository {
   Future<void> deleteTodo({required String docId}) async {
     await _firestore.collection('todos').doc(docId).delete();
   }
+
+  Future<void> updateTodo(
+      {required String docId,
+      required String title,
+      required String description}) async {
+    await _firestore.collection('todos').doc(docId).update({
+      'title': title,
+      'description': description,
+    });
+  }
 }

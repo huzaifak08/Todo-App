@@ -24,3 +24,15 @@ class DeleteTodo extends TodoEvent {
   @override
   List<Object> get props => [docId];
 }
+
+class UpdateTodo extends TodoEvent {
+  final String docId;
+  final String title;
+  final String description;
+
+  const UpdateTodo(
+      {required this.docId, required this.title, required this.description});
+
+  @override
+  List<Object> get props => [docId, title, description];
+}
