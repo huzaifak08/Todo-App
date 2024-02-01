@@ -205,7 +205,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   listener: (context, state) {
                     if (state.status == AuthStatus.success &&
                         state.file != null) {
-                      showSnackBar(context: context, message: state.message);
                       nextScreenReplacement(
                           context: context, page: const TodoNavigationBar());
                     }

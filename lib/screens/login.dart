@@ -132,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == AuthStatus.success) {
-                      showSnackBar(context: context, message: state.message);
                       nextScreenReplacement(
                           context: context, page: const TodoNavigationBar());
                     } else if (state.status == AuthStatus.failure) {

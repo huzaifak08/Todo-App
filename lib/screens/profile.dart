@@ -83,13 +83,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state.status == AuthStatus.success) {
-                  // showSnackBar(context: context, message: state.message);
                   nextScreenReplacement(
                       context: context, page: const LoginScreen());
                   PersistentNavBarNavigator.pushNewScreen(context,
                       screen: const LoginScreen(), withNavBar: false);
-                } else if (state.message.isNotEmpty) {
-                  showSnackBar(context: context, message: state.message);
                 }
               },
               builder: (context, state) {
