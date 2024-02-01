@@ -1,6 +1,5 @@
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/screens/profile.dart';
 
 class TodoNavigationBar extends StatefulWidget {
   const TodoNavigationBar({super.key});
