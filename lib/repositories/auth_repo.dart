@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/exports.dart';
 
 class AuthRepository {
@@ -118,5 +120,45 @@ class AuthRepository {
     TaskSnapshot snapshot = await uploadTask;
     String downloadURL = await snapshot.ref.getDownloadURL();
     return downloadURL;
+  }
+
+  // Google Auth:
+  Future<String> logInWithGoogle() async {
+    final googleSignIn = GoogleSignIn(scopes: ['email']);
+
+    try {
+      final googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount == null) {
+        return 'Google Account Not Found';
+      } else {
+        final googleSignInAuth = await googleSignInAccount.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuth.accessToken,
+            idToken: googleSignInAuth.idToken);
+
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_firebaseAuth.currentUser!.uid)
+            .set({
+          'email': googleSignInAccount.email,
+          'profilePic': googleSignInAccount.photoUrl,
+          'name': googleSignInAccount.displayName,
+          'uid': googleSignInAccount.id,
+          'phone': 00000000000,
+          'password': '123456'
+        });
+        return 'Welcome using Google';
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    } on PlatformException catch (e) {
+      throw Exception(e.message);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }

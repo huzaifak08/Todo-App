@@ -173,6 +173,47 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
+                ),
+                SizedBox(height: getHeight(context) * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state.status == AuthStatus.failure) {
+                          showSnackBar(
+                              context: context, message: state.message);
+                        }
+                      },
+                      builder: (context, state) {
+                        switch (state.status) {
+                          case AuthStatus.loading:
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+
+                          default:
+                            return Container(
+                                height: getHeight(context) * 0.07,
+                                padding:
+                                    EdgeInsets.all(getHeight(context) * 0.008),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2, color: AppColors.ternaryColor),
+                                  borderRadius: BorderRadius.circular(
+                                      getWidth(context) * 0.03),
+                                ),
+                                child: InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<AuthBloc>()
+                                          .add(SignInWithGoogle());
+                                    },
+                                    child: Image.asset('assets/google.png')));
+                        }
+                      },
+                    )
+                  ],
                 )
               ],
             ),

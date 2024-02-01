@@ -126,15 +126,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Change Password'),
-        content: CustomTextField(
-          myController: passwordController,
-          keyboardType: TextInputType.name,
-          obsecureText: false,
-          hint: 'Enter Password here',
-          onValidator: (value) {
-            return null;
-          },
-          onChanged: (value) {},
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+                'You cannot use change password feature if you are logged in using Google account.'),
+            SizedBox(height: getHeight(context) * 0.01),
+            CustomTextField(
+              myController: passwordController,
+              keyboardType: TextInputType.name,
+              obsecureText: false,
+              hint: 'Enter Password here',
+              onValidator: (value) {
+                return null;
+              },
+              onChanged: (value) {},
+            ),
+          ],
         ),
         actions: [
           ElevatedButton.icon(

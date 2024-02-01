@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Register>(_register);
     on<SignIn>(_signIn);
     on<SignOut>(_signOut);
+    on<SignInWithGoogle>(_signInWithGoogle);
     on<ForgotPassword>(_forgotPassword);
     on<ChangePassword>(_changePassword);
     on<ToggleVisiblity>(_toggleVisibility);
@@ -48,6 +49,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _authRepository
         .signInUser(email: event.email, password: event.password)
         .then((value) {
+      emit(state.copyWith(message: value, status: AuthStatus.success));
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(
+          message: error.toString(), status: AuthStatus.failure));
+    });
+  }
+
+  void _signInWithGoogle(
+      SignInWithGoogle event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+
+    await _authRepository.logInWithGoogle().then((value) {
       emit(state.copyWith(message: value, status: AuthStatus.success));
     }).onError((error, stackTrace) {
       emit(state.copyWith(

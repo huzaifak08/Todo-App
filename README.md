@@ -24,7 +24,8 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Firebase Notification.  
 --> Firebase In-App Notifications.  
 --> Firebase Notification Trigger.  
---> Firebase Notification Redirect to Page.
+--> Firebase Notification Redirect to Page.  
+--> Google Sign In.
 
 ### Bloc:
 
