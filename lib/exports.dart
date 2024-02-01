@@ -33,6 +33,7 @@ export 'package:todo_app/screens/signup.dart';
 export 'package:todo_app/screens/home.dart';
 export 'package:todo_app/screens/add_todo.dart';
 export 'package:todo_app/screens/update_todo.dart';
+export 'package:todo_app/screens/profile.dart';
 
 // Models:
 export 'package:todo_app/models/user_model.dart';
@@ -42,7 +43,7 @@ export 'package:todo_app/models/todo_model.dart';
 export 'package:todo_app/repositories/auth_repo.dart';
 export 'package:todo_app/repositories/user_repo.dart';
 export 'package:todo_app/repositories/todo_repo.dart';
-export 'package:todo_app/repositories/notifications.dart';
+export 'package:todo_app/repositories/notification_repo.dart';
 
 // Blocs:
 export 'package:todo_app/bloc/auth/auth_bloc.dart';

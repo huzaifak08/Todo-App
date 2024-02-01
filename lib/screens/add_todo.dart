@@ -59,6 +59,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     return CustomButton(
                       title: 'Save',
                       onPressed: () {
+                        context.read<TodoBloc>().add(FetchToken());
+
                         TodoModel newTodo = TodoModel(
                           title: _titleController.text,
                           description: _descriptionController.text,
@@ -68,6 +70,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                         context
                             .read<TodoBloc>()
                             .add(SaveTodo(todoModel: newTodo));
+
+                        context
+                            .read<TodoBloc>()
+                            .add(SendNotification(token: state.deviceToken));
+
+                        debugPrint("Token in Screen: ${state.deviceToken}");
+
                         Navigator.pop(context);
                       },
                     );

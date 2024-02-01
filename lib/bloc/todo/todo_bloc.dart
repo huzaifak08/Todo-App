@@ -5,12 +5,16 @@ part 'todo_state.dart';
 
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final TodoRepository _todoRepository = TodoRepository();
+  final NotificationRepository _notification = NotificationRepository();
 
   TodoBloc() : super(const TodoState()) {
     on<SaveTodo>(_saveTodo);
     on<FetchTodo>(_fetchTodo);
     on<DeleteTodo>(_deleteTodo);
     on<UpdateTodo>(_updateTodo);
+    on<SaveToken>(_saveToken);
+    on<FetchToken>(_fetchToken);
+    on<SendNotification>(_sendNotification);
   }
 
   void _saveTodo(SaveTodo event, Emitter<TodoState> emit) async {
@@ -50,5 +54,26 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         docId: event.docId, title: event.title, description: event.description);
 
     emit(state.copyWith(status: TodoStatus.success));
+  }
+
+  void _saveToken(SaveToken event, Emitter<TodoState> emit) async {
+    await _notification.saveDeviceToken(token: event.token);
+  }
+
+  void _fetchToken(FetchToken event, Emitter<TodoState> emit) async {
+    Map<String, dynamic> tokenMap = await _notification.fetchDeviceToken();
+
+    // String token = tokenMap.map((key, value) => value).toString();
+    // String token = tokenMap.values.toString(); // (values)
+    String token = tokenMap['token'];
+
+    debugPrint('Token in Bloc: $token');
+
+    emit(state.copyWith(deviceToken: token));
+  }
+
+  void _sendNotification(
+      SendNotification event, Emitter<TodoState> emit) async {
+    await _notification.sendNotification(token: event.token);
   }
 }

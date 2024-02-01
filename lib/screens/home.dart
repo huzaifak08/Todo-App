@@ -8,7 +8,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  NotificationServices notificationServices = NotificationServices();
+  NotificationRepository notificationServices = NotificationRepository();
 
   @override
   void initState() {
@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Token:
     notificationServices.getDeviceToken().then((value) {
       debugPrint('Device Token: $value');
+      context.read<TodoBloc>().add(SaveToken(token: value));
     });
 
     // Refresh:

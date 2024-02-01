@@ -36,3 +36,21 @@ class UpdateTodo extends TodoEvent {
   @override
   List<Object> get props => [docId, title, description];
 }
+
+class SaveToken extends TodoEvent {
+  final String token;
+  const SaveToken({required this.token});
+
+  @override
+  List<Object> get props => [token];
+}
+
+class FetchToken extends TodoEvent {}
+
+class SendNotification extends TodoEvent {
+  final String token;
+  const SendNotification({required this.token});
+
+  @override
+  List<Object> get props => [token];
+}

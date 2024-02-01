@@ -4,6 +4,7 @@ import 'package:todo_app/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // if (kIsWeb) {
   //   await Firebase.initializeApp(
@@ -24,6 +25,13 @@ void main() async {
       );
 
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint(message.notification!.title.toString());
+  debugPrint(message.data.toString());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,10 @@
 import 'package:todo_app/exports.dart';
+import 'package:http/http.dart' as http;
 
-class NotificationServices {
+class NotificationRepository {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -90,6 +94,7 @@ class NotificationServices {
     await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
         onDidReceiveNotificationResponse: (payload) {
       // handle interaction when app is active for android
+
       handleMessage(context, message);
     });
   }
@@ -132,11 +137,8 @@ class NotificationServices {
   // Handle Message:
   void handleMessage(BuildContext context, RemoteMessage message) {
     if (message.data['type'] == 'msg') {
-      // nextScreen(
-      //     context,
-      //     MessageScreen(
-      //       id: message.data['id'],
-      //     ));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ProfileScreen()));
     }
   }
 
@@ -156,5 +158,69 @@ class NotificationServices {
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       handleMessage(context, event);
     });
+  }
+
+  // Save Token:
+  Future saveDeviceToken({required String token}) async {
+    try {
+      await _firestore
+          .collection('tokens')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .set({
+        "token": token,
+      });
+    } on FirebaseException catch (err) {
+      throw Exception(err.message);
+    }
+  }
+
+  // Get Token:
+  Future<Map<String, dynamic>> fetchDeviceToken() async {
+    try {
+      Map<String, dynamic> map = await _firestore
+          .collection('tokens')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .get()
+          .then((DocumentSnapshot snapshot) {
+        return <String, dynamic>{
+          "token": snapshot['token'] as String,
+        };
+      });
+
+      return map;
+    } on FirebaseException catch (err) {
+      throw Exception(err.message);
+    }
+  }
+
+  // Send Notification:
+  Future sendNotification({required String token}) async {
+    const String serverKey =
+        'AAAA1DVnoMI:APA91bH0_gva5oZesSe-_krSrGF1bwzUyAd_G5ynxyCrFyy_RHVLQWrbMs9DlCj0JAlVUqSdXbR_Fo526ovFJFcpHPzPZQQXV91aF-FhlO85AwRUeMsn-yZ3-GLjC0woG6y-FIbPTta9';
+    const String fcmUrl = "https://fcm.googleapis.com/fcm/send";
+
+    final response = await http.post(
+      Uri.parse(fcmUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverKey',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'title': 'Todo Saved',
+            'body': 'Dear user, Your todo has been saved successully.',
+          },
+          'priority': 'high',
+          'to': token,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint('Notification sent successfully');
+    } else {
+      debugPrint('Notification sending failed');
+    }
   }
 }
