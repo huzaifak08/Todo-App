@@ -140,17 +140,27 @@ class AuthRepository {
 
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-        await FirebaseFirestore.instance
+        final userDoc = await _firestore
             .collection('users')
             .doc(_firebaseAuth.currentUser!.uid)
-            .set({
-          'email': googleSignInAccount.email,
-          'profilePic': googleSignInAccount.photoUrl,
-          'name': googleSignInAccount.displayName,
-          'uid': googleSignInAccount.id,
-          'phone': 00000000000,
-          'password': '123456'
-        });
+            .get();
+
+        if (userDoc.exists) {
+          return 'User Already Exists';
+        } else {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_firebaseAuth.currentUser!.uid)
+              .set({
+            'email': googleSignInAccount.email,
+            'profilePic': googleSignInAccount.photoUrl,
+            'name': googleSignInAccount.displayName,
+            'uid': googleSignInAccount.id,
+            'phone': 00000000000,
+            'password': '123456'
+          });
+        }
+
         return 'Welcome using Google';
       }
     } on FirebaseAuthException catch (e) {
