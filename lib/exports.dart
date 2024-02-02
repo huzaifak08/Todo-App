@@ -5,6 +5,7 @@ export 'dart:convert';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/gestures.dart';
+export 'package:flutter/services.dart';
 
 // Constants:
 export 'package:todo_app/shared/constants.dart';
@@ -25,6 +26,9 @@ export 'package:app_settings/app_settings.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 export 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
+export 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+export 'package:google_sign_in/google_sign_in.dart';
+export 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 // Screens:
 export 'package:todo_app/screens/splash.dart';
@@ -34,6 +38,7 @@ export 'package:todo_app/screens/home.dart';
 export 'package:todo_app/screens/add_todo.dart';
 export 'package:todo_app/screens/update_todo.dart';
 export 'package:todo_app/screens/profile.dart';
+export 'package:todo_app/screens/nav_bar.dart';
 
 // Models:
 export 'package:todo_app/models/user_model.dart';
@@ -58,3 +63,4 @@ export 'package:todo_app/components/custom_row.dart';
 export 'package:todo_app/utils/navigation.dart';
 export 'package:todo_app/utils/snackbar.dart';
 export 'package:todo_app/utils/image_picker.dart';
+export 'package:todo_app/components/custom_auth_button.dart';

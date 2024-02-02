@@ -1,5 +1,4 @@
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/screens/nav_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -175,45 +174,62 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: getHeight(context) * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BlocConsumer<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state.status == AuthStatus.failure) {
-                          showSnackBar(
-                              context: context, message: state.message);
-                        }
-                      },
-                      builder: (context, state) {
-                        switch (state.status) {
-                          case AuthStatus.loading:
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state.status == AuthStatus.failure) {
+                      showSnackBar(context: context, message: state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    switch (state.status) {
+                      case AuthStatus.loading:
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
 
-                          default:
-                            return Container(
-                                height: getHeight(context) * 0.07,
-                                padding:
-                                    EdgeInsets.all(getHeight(context) * 0.008),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 2, color: AppColors.ternaryColor),
-                                  borderRadius: BorderRadius.circular(
-                                      getWidth(context) * 0.03),
-                                ),
-                                child: InkWell(
-                                    onTap: () {
-                                      context
-                                          .read<AuthBloc>()
-                                          .add(SignInWithGoogle());
-                                    },
-                                    child: Image.asset('assets/google.png')));
-                        }
-                      },
-                    )
-                  ],
+                      case AuthStatus.failure:
+                        return const Center(
+                          child: Text('Something Went Wrong'),
+                        );
+
+                      case AuthStatus.success:
+                        return CustomAuthButton(
+                          imageUrl: 'assets/google.png',
+                          onPressed: () {},
+                        );
+
+                      case AuthStatus.initial:
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomAuthButton(
+                              imageUrl: 'assets/google.png',
+                              onPressed: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignInWithGoogle());
+                              },
+                            ),
+                            SizedBox(width: getWidth(context) * 0.02),
+                            CustomAuthButton(
+                              imageUrl: 'assets/facebook.png',
+                              onPressed: () async {
+                                await AuthRepository().signInWithFacebook();
+                              },
+                            ),
+                            SizedBox(width: getWidth(context) * 0.02),
+                            CustomAuthButton(
+                              imageUrl: 'assets/microsoft.png',
+                              onPressed: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignInWithGoogle());
+                              },
+                            ),
+                          ],
+                        );
+                    }
+                  },
                 )
               ],
             ),

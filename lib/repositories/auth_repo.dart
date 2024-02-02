@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/exports.dart';
 
 class AuthRepository {
@@ -138,7 +136,7 @@ class AuthRepository {
             accessToken: googleSignInAuth.accessToken,
             idToken: googleSignInAuth.idToken);
 
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        await _firebaseAuth.signInWithCredential(credential);
 
         final userDoc = await _firestore
             .collection('users')
@@ -162,6 +160,49 @@ class AuthRepository {
         }
 
         return 'Welcome using Google';
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    } on PlatformException catch (e) {
+      throw Exception(e.message);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<String> signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      // ignore: unrelated_type_equality_checks
+      // if (loginResult == LoginStatus.success) {}
+
+      final OAuthCredential facebookCredentials =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      UserCredential credential =
+          await _firebaseAuth.signInWithCredential(facebookCredentials);
+
+      final userDoc = await _firestore
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .get();
+
+      if (userDoc.exists) {
+        return 'User Already Exists';
+      } else {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_firebaseAuth.currentUser!.uid)
+            .set({
+          'email': credential.user!.email,
+          'profilePic': credential.user!.photoURL,
+          'name': credential.user!.displayName,
+          'uid': credential.user!.uid,
+          'phone': 00000000000,
+          'password': '123456'
+        });
+        return 'Welcome using Facebook Auth';
       }
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message);

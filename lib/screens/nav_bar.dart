@@ -1,4 +1,3 @@
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:todo_app/exports.dart';
 
 class TodoNavigationBar extends StatefulWidget {

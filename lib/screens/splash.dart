@@ -1,5 +1,4 @@
 import 'package:todo_app/exports.dart';
-import 'package:todo_app/screens/nav_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
