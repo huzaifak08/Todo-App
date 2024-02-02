@@ -45,7 +45,7 @@ android {
         applicationId "com.example.todo_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -69,4 +69,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.1.5'
     implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-analytics")
+    implementation 'com.facebook.android:facebook-login:latest.release'
 }
