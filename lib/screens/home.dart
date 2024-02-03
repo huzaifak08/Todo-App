@@ -38,12 +38,44 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: Text(
+          'Home Screen',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        backgroundColor: AppColors.primaryColor,
+        centerTitle: true,
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           if (state.status == TodoStatus.loading) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.todoList.isEmpty) {
+            return Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: getWidth(context) * 0.027),
+              child: Column(
+                children: [
+                  Image.asset('assets/notodo.png'),
+                  Text(
+                    "No Todo's Found",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.black),
+                  ),
+                  Text(
+                    "Please add some Todo's by clicking on \"+\" Button at bottom-left corner.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: AppColors.ternaryColor),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
           }
 
           return ListView.builder(
@@ -83,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: AppColors.secondaryColor),
         onPressed: () {
           Navigator.of(context, rootNavigator: true)
               .pushNamed(RouteName.addTodoScreen);
