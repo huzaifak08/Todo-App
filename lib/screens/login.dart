@@ -181,12 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: CircularProgressIndicator(),
                         );
 
-                      case AuthStatus.failure:
-                        return const Center(
-                          child: Text('Something Went Wrong'),
-                        );
-
-                      case AuthStatus.success:
+                      default:
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -201,48 +196,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(width: getWidth(context) * 0.02),
                             CustomAuthButton(
                               imageUrl: 'assets/facebook.png',
-                              onPressed: () async {
-                                await AuthRepository().signInWithFacebook();
+                              onPressed: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignInWithFacebook());
                               },
                             ),
                             SizedBox(width: getWidth(context) * 0.02),
                             CustomAuthButton(
-                              imageUrl: 'assets/microsoft.png',
+                              imageUrl: 'assets/X.png',
                               onPressed: () {
                                 context
                                     .read<AuthBloc>()
-                                    .add(SignInWithGoogle());
-                              },
-                            ),
-                          ],
-                        );
-
-                      case AuthStatus.initial:
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomAuthButton(
-                              imageUrl: 'assets/google.png',
-                              onPressed: () {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(SignInWithGoogle());
-                              },
-                            ),
-                            SizedBox(width: getWidth(context) * 0.02),
-                            CustomAuthButton(
-                              imageUrl: 'assets/facebook.png',
-                              onPressed: () async {
-                                await AuthRepository().signInWithFacebook();
-                              },
-                            ),
-                            SizedBox(width: getWidth(context) * 0.02),
-                            CustomAuthButton(
-                              imageUrl: 'assets/microsoft.png',
-                              onPressed: () {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(SignInWithGoogle());
+                                    .add(SignInWithTwitter());
                               },
                             ),
                           ],

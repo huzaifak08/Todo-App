@@ -26,7 +26,9 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Firebase Notification Trigger.  
 --> Firebase Notification Redirect to Page.  
 --> Google Auth.  
---> Facebook Auth.
+--> Facebook Auth.  
+--> Twitter Auth.  
+--> Routing.
 
 ### Bloc:
 

@@ -1,9 +1,14 @@
 import 'package:todo_app/exports.dart';
+import 'package:twitter_login/twitter_login.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final twitterLogin = TwitterLogin(
+      apiKey: Constants.twitterApiKey,
+      apiSecretKey: Constants.twitterSecretKey,
+      redirectURI: Constants.redirectUrl);
 
   bool checkLoggedInStatus() {
     try {
@@ -210,6 +215,52 @@ class AuthRepository {
       throw Exception(e.message);
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  Future<String> signInWithTwitter() async {
+    final authResult = await twitterLogin.loginV2();
+
+    if (authResult.status == TwitterLoginStatus.loggedIn) {
+      try {
+        final credential = TwitterAuthProvider.credential(
+            accessToken: authResult.authToken!,
+            secret: authResult.authTokenSecret!);
+
+        await _firebaseAuth.signInWithCredential(credential);
+
+        // final userDetails = authResult.user;
+
+        final userDoc = await _firestore
+            .collection('users')
+            .doc(_firebaseAuth.currentUser!.uid)
+            .get();
+
+        if (userDoc.exists) {
+          return 'User Already Exists';
+        } else {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_firebaseAuth.currentUser!.uid)
+              .set({
+            'email': _firebaseAuth.currentUser!.email,
+            'profilePic': _firebaseAuth.currentUser!.photoURL,
+            'name': _firebaseAuth.currentUser!.displayName,
+            'uid': _firebaseAuth.currentUser!.uid,
+            'phone': 00000000000,
+            'password': '123456'
+          });
+          return 'Welcome using Twitter Auth';
+        }
+      } on FirebaseAuthException catch (e) {
+        throw Exception(e.message);
+      } on PlatformException catch (e) {
+        throw Exception(e.message);
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    } else {
+      return 'Not Logged in';
     }
   }
 }

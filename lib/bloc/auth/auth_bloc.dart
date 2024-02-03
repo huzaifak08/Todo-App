@@ -12,6 +12,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignIn>(_signIn);
     on<SignOut>(_signOut);
     on<SignInWithGoogle>(_signInWithGoogle);
+    on<SignInWithFacebook>(_signInWithFacebook);
+    on<SignInWithTwitter>(_signInWithTwitter);
     on<ForgotPassword>(_forgotPassword);
     on<ChangePassword>(_changePassword);
     on<ToggleVisiblity>(_toggleVisibility);
@@ -61,6 +63,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     await _authRepository.logInWithGoogle().then((value) {
+      emit(state.copyWith(message: value, status: AuthStatus.success));
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(
+          message: error.toString(), status: AuthStatus.failure));
+    });
+  }
+
+  void _signInWithFacebook(
+      SignInWithFacebook event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+
+    await _authRepository.signInWithFacebook().then((value) {
+      emit(state.copyWith(message: value, status: AuthStatus.success));
+    }).onError((error, stackTrace) {
+      emit(state.copyWith(
+          message: error.toString(), status: AuthStatus.failure));
+    });
+  }
+
+  void _signInWithTwitter(
+      SignInWithTwitter event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+
+    await _authRepository.signInWithTwitter().then((value) {
       emit(state.copyWith(message: value, status: AuthStatus.success));
     }).onError((error, stackTrace) {
       emit(state.copyWith(

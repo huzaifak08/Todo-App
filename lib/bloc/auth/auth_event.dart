@@ -29,6 +29,10 @@ class SignIn extends AuthEvent {
 
 class SignInWithGoogle extends AuthEvent {}
 
+class SignInWithFacebook extends AuthEvent {}
+
+class SignInWithTwitter extends AuthEvent {}
+
 class SignOut extends AuthEvent {}
 
 class ForgotPassword extends AuthEvent {
