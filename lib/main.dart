@@ -1,7 +1,6 @@
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
 import 'package:todo_app/routes/routes.dart';
-import 'package:todo_app/routes/routes_name.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
