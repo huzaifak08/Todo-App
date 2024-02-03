@@ -59,12 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       description: state.todoList[index].description,
                       createdAt: state.todoList[index].createdAt);
 
-                  nextScreen(
-                    context: context,
-                    page: UpdateTodoScreen(
-                      todoModel: todo,
-                    ),
-                  );
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamed(RouteName.updateTodoScreen, arguments: {
+                    'docId': todo.docId,
+                    'title': todo.title,
+                    'description': todo.description,
+                  });
                 },
                 title: Text(todo.title),
                 subtitle: Text(todo.description),
@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primaryColor,
         child: const Icon(Icons.add),
         onPressed: () {
-          nextScreen(context: context, page: const AddTodoScreen());
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(RouteName.addTodoScreen);
         },
       ),
     );

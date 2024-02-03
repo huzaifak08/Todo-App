@@ -23,10 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.isLoggedIn) {
-            nextScreenReplacement(
-                context: context, page: const TodoNavigationBar());
+            Navigator.pushReplacementNamed(context, RouteName.navBarScreen);
           } else {
-            nextScreenReplacement(context: context, page: const LoginScreen());
+            Navigator.pushReplacementNamed(context, RouteName.loginScreen);
           }
         },
         child: Center(

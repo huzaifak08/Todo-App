@@ -1,7 +1,7 @@
 import 'package:todo_app/exports.dart';
 
 class UpdateTodoScreen extends StatefulWidget {
-  final TodoModel todoModel;
+  final dynamic todoModel;
   const UpdateTodoScreen({
     super.key,
     required this.todoModel,
@@ -17,8 +17,8 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
 
   @override
   void initState() {
-    _titleController.text = widget.todoModel.title;
-    _descriptionController.text = widget.todoModel.description;
+    _titleController.text = widget.todoModel['title'];
+    _descriptionController.text = widget.todoModel['description'];
     super.initState();
   }
 
@@ -70,7 +70,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
                   title: 'Save',
                   onPressed: () {
                     context.read<TodoBloc>().add(UpdateTodo(
-                        docId: widget.todoModel.docId!,
+                        docId: widget.todoModel['docId'],
                         title: _titleController.text,
                         description: _descriptionController.text));
                   },

@@ -1,5 +1,7 @@
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
+import 'package:todo_app/routes/routes.dart';
+import 'package:todo_app/routes/routes_name.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,37 +42,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => AuthBloc()),
-          BlocProvider(create: (_) => UserBloc()),
-          BlocProvider(create: (_) => TodoBloc()),
-        ],
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-              textSelectionTheme: const TextSelectionThemeData(
-                  cursorColor: AppColors.primaryColor,
-                  selectionHandleColor: AppColors.primaryColor),
-              textTheme: TextTheme(
-                titleLarge: TextStyle(
-                  fontSize: getWidth(context) * 0.07,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondaryColor,
-                ),
-                titleMedium: TextStyle(
-                  fontSize: getWidth(context) * 0.05,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondaryColor,
-                ),
-                titleSmall: TextStyle(
-                  fontSize: getWidth(context) * 0.04,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondaryColor,
-                ),
-              )),
-          home: const SplashScreen(),
-        ));
+      providers: [
+        BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => UserBloc()),
+        BlocProvider(create: (_) => TodoBloc()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+            textSelectionTheme: const TextSelectionThemeData(
+                cursorColor: AppColors.primaryColor,
+                selectionHandleColor: AppColors.primaryColor),
+            textTheme: TextTheme(
+              titleLarge: TextStyle(
+                fontSize: getWidth(context) * 0.07,
+                fontWeight: FontWeight.w700,
+                color: AppColors.secondaryColor,
+              ),
+              titleMedium: TextStyle(
+                fontSize: getWidth(context) * 0.05,
+                fontWeight: FontWeight.w700,
+                color: AppColors.secondaryColor,
+              ),
+              titleSmall: TextStyle(
+                fontSize: getWidth(context) * 0.04,
+                fontWeight: FontWeight.w600,
+                color: AppColors.secondaryColor,
+              ),
+            )),
+        // home: const SplashScreen(),
+        initialRoute: RouteName.splashScreen,
+        onGenerateRoute: Routes.generateRoute,
+      ),
+    );
   }
 }

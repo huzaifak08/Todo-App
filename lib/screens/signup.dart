@@ -194,8 +194,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   listener: (context, state) {
                     if (state.status == AuthStatus.success &&
                         state.file != null) {
-                      nextScreenReplacement(
-                          context: context, page: const TodoNavigationBar());
+                      Navigator.pushReplacementNamed(
+                          context, RouteName.navBarScreen);
                     }
                   },
                   builder: (context, state) {

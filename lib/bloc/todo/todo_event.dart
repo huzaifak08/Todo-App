@@ -17,6 +17,8 @@ class SaveTodo extends TodoEvent {
 
 class FetchTodo extends TodoEvent {}
 
+class CancelStream extends TodoEvent {}
+
 class DeleteTodo extends TodoEvent {
   final String docId;
   const DeleteTodo({required this.docId});

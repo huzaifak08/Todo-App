@@ -122,8 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state.status == AuthStatus.success) {
-                      nextScreenReplacement(
-                          context: context, page: const TodoNavigationBar());
+                      Navigator.pushReplacementNamed(
+                          context, RouteName.navBarScreen);
                     } else if (state.status == AuthStatus.failure) {
                       showSnackBar(context: context, message: state.message);
                     }
@@ -154,8 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: "SignUp",
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            nextScreen(
-                                context: context, page: const SignUpScreen());
+                            Navigator.pushNamed(
+                                context, RouteName.signUpScreen);
 
                             emailController.clear();
                             passwordController.clear();

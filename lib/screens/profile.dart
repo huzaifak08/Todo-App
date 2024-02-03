@@ -82,10 +82,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state.status == AuthStatus.success) {
-                  nextScreenReplacement(
-                      context: context, page: const LoginScreen());
-                  PersistentNavBarNavigator.pushNewScreen(context,
-                      screen: const LoginScreen(), withNavBar: false);
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamedAndRemoveUntil(
+                          RouteName.loginScreen, (route) => false);
+                  context.read<TodoBloc>().add(CancelStream());
                 }
               },
               builder: (context, state) {

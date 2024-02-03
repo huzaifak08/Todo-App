@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:todo_app/exports.dart';
 
 part 'todo_event.dart';
@@ -7,9 +9,12 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final TodoRepository _todoRepository = TodoRepository();
   final NotificationRepository _notification = NotificationRepository();
 
+  late StreamSubscription<QuerySnapshot> _todoSubscription;
+
   TodoBloc() : super(const TodoState()) {
     on<SaveTodo>(_saveTodo);
     on<FetchTodo>(_fetchTodo);
+    on<CancelStream>(_cancelTodoSubscription);
     on<DeleteTodo>(_deleteTodo);
     on<UpdateTodo>(_updateTodo);
     on<SaveToken>(_saveToken);
@@ -28,19 +33,22 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
 
   void _fetchTodo(FetchTodo event, Emitter<TodoState> emit) async {
     emit(state.copyWith(status: TodoStatus.loading));
-    Stream<QuerySnapshot> todoStream = _todoRepository.getTodos();
+    final streamController = StreamController<QuerySnapshot>();
 
-    emit(state.copyWith(status: TodoStatus.success));
+    _todoSubscription = _todoRepository.getTodos().listen((snapshot) {
+      streamController.add(snapshot);
+    });
 
-    await for (QuerySnapshot snapshot in todoStream) {
+    await for (var snapshot in streamController.stream) {
       final List<DocumentSnapshot> document = snapshot.docs;
-
       final List<TodoModel> todoList = document.map((e) {
         return TodoModel.fromDocument(e);
       }).toList();
-
-      emit(state.copyWith(todoList: todoList));
+      emit(state.copyWith(
+          status: TodoStatus.success, todoList: List.from(todoList)));
     }
+
+    await streamController.close();
   }
 
   void _deleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
@@ -75,5 +83,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   void _sendNotification(
       SendNotification event, Emitter<TodoState> emit) async {
     await _notification.sendNotification(token: event.token);
+  }
+
+  void _cancelTodoSubscription(CancelStream event, Emitter<TodoState> emit) {
+    _todoSubscription.cancel();
+    // _todoSubscription = null;
   }
 }

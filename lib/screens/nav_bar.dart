@@ -47,6 +47,7 @@ class _TodoNavigationBarState extends State<TodoNavigationBar> {
       backgroundColor: AppColors.primaryColor,
       decoration: NavBarDecoration(borderRadius: BorderRadius.circular(1)),
       navBarStyle: NavBarStyle.style1,
+      stateManagement: false,
     );
   }
 }
