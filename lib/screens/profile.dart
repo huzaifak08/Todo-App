@@ -85,6 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context, rootNavigator: true)
                       .pushNamedAndRemoveUntil(
                           RouteName.loginScreen, (route) => false);
+
                   context.read<TodoBloc>().add(CancelStream());
                 }
               },
@@ -99,8 +100,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onPressed: () {
                           context.read<AuthBloc>().add(ChangePassword(
                               password: passwordController.text));
-
-                          // Navigator.pop(context);
                         },
                       ),
                     ),

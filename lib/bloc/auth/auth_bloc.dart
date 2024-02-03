@@ -71,12 +71,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _signOut(SignOut event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
 
-    await _authRepository.signOutUser().then((value) {
-      emit(state.copyWith(message: value, status: AuthStatus.success));
-    }).onError((error, stackTrace) {
+    try {
+      await _authRepository.signOutUser().then((value) {
+        emit(state.copyWith(message: value, status: AuthStatus.success));
+      }).onError((error, stackTrace) {
+        emit(state.copyWith(
+            message: error.toString(), status: AuthStatus.failure));
+      });
+    } catch (err) {
+      debugPrint(err.toString());
+    } finally {
       emit(state.copyWith(
-          message: error.toString(), status: AuthStatus.failure));
-    });
+          status: AuthStatus.initial,
+          isEmailSend: false,
+          isLoggedIn: false,
+          isVisible: false));
+    }
   }
 
   void _forgotPassword(ForgotPassword event, Emitter<AuthState> emit) async {
