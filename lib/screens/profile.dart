@@ -8,7 +8,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -132,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'You cannot use change password feature if you are logged in using Google account.'),
             SizedBox(height: getHeight(context) * 0.01),
             CustomTextField(
-              myController: passwordController,
+              controller: passwordController,
               keyboardType: TextInputType.name,
               obsecureText: false,
               hint: 'Enter Password here',

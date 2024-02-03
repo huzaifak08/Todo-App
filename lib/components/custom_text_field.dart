@@ -1,30 +1,34 @@
 import 'package:todo_app/exports.dart';
 
 class CustomTextField extends StatelessWidget {
-  final TextEditingController? myController;
+  final TextEditingController? controller;
   final FocusNode? focusNode;
   final FormFieldSetter? onFiledSubmissionValue;
   final FormFieldValidator onValidator;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final String hint;
-  final bool obsecureText;
+  final bool? obsecureText;
   final bool enable, autoFocus;
   final ValueChanged<String>? onChanged;
-  final Widget? suffixIcon;
+  final Widget? prefixIcon, suffixIcon;
+  final int? maxLines, maxLength;
 
   const CustomTextField({
     super.key,
-    this.myController,
+    this.controller,
     this.focusNode,
     this.onFiledSubmissionValue,
     required this.onValidator,
-    required this.keyboardType,
+    this.keyboardType,
     required this.hint,
-    required this.obsecureText,
+    this.obsecureText = false,
     this.enable = true,
     this.autoFocus = false,
     this.onChanged,
     this.suffixIcon,
+    this.prefixIcon,
+    this.maxLines,
+    this.maxLength,
   });
 
   @override
@@ -32,12 +36,12 @@ class CustomTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
-        controller: myController,
+        controller: controller,
         focusNode: focusNode,
-        obscureText: obsecureText,
+        obscureText: obsecureText ?? false,
         onFieldSubmitted: onFiledSubmissionValue,
         validator: onValidator,
-        keyboardType: keyboardType,
+        keyboardType: keyboardType ?? TextInputType.text,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 19),
         decoration: InputDecoration(
           border: OutlineInputBorder(
@@ -63,9 +67,13 @@ class CustomTextField extends StatelessWidget {
           hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: AppColors.primaryTextColor.withOpacity(0.8), height: 0),
           contentPadding: const EdgeInsets.all(15),
+          prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
         ),
         onChanged: onChanged,
+        maxLines: maxLines ?? 1,
+        maxLength: maxLength,
+        cursorColor: AppColors.primaryColor,
       ),
     );
   }

@@ -8,21 +8,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  late FocusNode passwordFocusNode;
+  FocusNode passwordFocusNode = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-
-    passwordFocusNode = FocusNode();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -47,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Image.asset('assets/Icon-todo.png'),
                 CustomTextField(
-                  myController: emailController,
+                  controller: emailController,
                   onFiledSubmissionValue: (newValue) {
                     if (newValue != null) {
                       passwordFocusNode.requestFocus();
@@ -73,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context, state) {
                     return CustomTextField(
                       focusNode: passwordFocusNode,
-                      myController: passwordController,
+                      controller: passwordController,
                       onValidator: (value) {
                         if (passwordController.text.isEmpty ||
                             passwordController.text.length < 6) {
@@ -165,6 +156,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ..onTap = () {
                             nextScreen(
                                 context: context, page: const SignUpScreen());
+
+                            emailController.clear();
+                            passwordController.clear();
                           },
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: AppColors.primaryColor,
@@ -193,9 +187,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                       case AuthStatus.success:
-                        return CustomAuthButton(
-                          imageUrl: 'assets/google.png',
-                          onPressed: () {},
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomAuthButton(
+                              imageUrl: 'assets/google.png',
+                              onPressed: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignInWithGoogle());
+                              },
+                            ),
+                            SizedBox(width: getWidth(context) * 0.02),
+                            CustomAuthButton(
+                              imageUrl: 'assets/facebook.png',
+                              onPressed: () async {
+                                await AuthRepository().signInWithFacebook();
+                              },
+                            ),
+                            SizedBox(width: getWidth(context) * 0.02),
+                            CustomAuthButton(
+                              imageUrl: 'assets/microsoft.png',
+                              onPressed: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(SignInWithGoogle());
+                              },
+                            ),
+                          ],
                         );
 
                       case AuthStatus.initial:

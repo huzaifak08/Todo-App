@@ -33,7 +33,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
         child: Column(
           children: [
             CustomTextField(
-              myController: _titleController,
+              controller: _titleController,
               onValidator: (value) {
                 if (_titleController.text.isEmpty) {
                   return "Title can't be empty";
@@ -45,7 +45,7 @@ class _UpdateTodoScreenState extends State<UpdateTodoScreen> {
               obsecureText: false,
             ),
             CustomTextField(
-              myController: _descriptionController,
+              controller: _descriptionController,
               onValidator: (value) {
                 if (_descriptionController.text.isEmpty) {
                   return "Description can't be empty";

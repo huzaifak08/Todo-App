@@ -50,6 +50,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
+              textSelectionTheme: const TextSelectionThemeData(
+                  cursorColor: AppColors.primaryColor,
+                  selectionHandleColor: AppColors.primaryColor),
               textTheme: TextTheme(
                 titleLarge: TextStyle(
                   fontSize: getWidth(context) * 0.07,

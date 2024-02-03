@@ -103,7 +103,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
-                  myController: nameController,
+                  controller: nameController,
+                  keyboardType: TextInputType.name,
+                  hint: 'Enter Full Name',
+                  suffixIcon: const Icon(Icons.account_circle,
+                      color: AppColors.primaryColor),
                   onFiledSubmissionValue: (newValue) {
                     if (newValue != null) {
                       phoneFocusNode.requestFocus();
@@ -114,18 +118,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? null
                         : 'Enter a valid Username';
                   },
-                  keyboardType: TextInputType.name,
-                  hint: 'Enter Full Name',
-                  obsecureText: false,
-                  suffixIcon: const Icon(
-                    Icons.account_circle,
-                    color: AppColors.primaryColor,
-                  ),
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
                   focusNode: phoneFocusNode,
-                  myController: phoneController,
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  hint: 'Enter Phone number',
+                  suffixIcon:
+                      const Icon(Icons.phone, color: AppColors.primaryColor),
                   onFiledSubmissionValue: (newValue) {
                     if (newValue != null) {
                       emailFocusNode.requestFocus();
@@ -136,18 +137,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? null
                         : 'Enter a valid Phone number';
                   },
-                  keyboardType: TextInputType.phone,
-                  hint: 'Enter Phone number',
-                  obsecureText: false,
-                  suffixIcon: const Icon(
-                    Icons.phone,
-                    color: AppColors.primaryColor,
-                  ),
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 CustomTextField(
                   focusNode: emailFocusNode,
-                  myController: emailController,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  hint: 'Enter Email Address',
+                  suffixIcon:
+                      const Icon(Icons.email, color: AppColors.primaryColor),
                   onFiledSubmissionValue: (newValue) {
                     if (newValue != null) {
                       passwordFocusNode.requestFocus();
@@ -160,20 +158,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? null
                         : 'Enter a valid Email';
                   },
-                  keyboardType: TextInputType.emailAddress,
-                  hint: 'Enter Email Address',
-                  obsecureText: false,
-                  suffixIcon: const Icon(
-                    Icons.email,
-                    color: AppColors.primaryColor,
-                  ),
                 ),
                 SizedBox(height: getHeight(context) * 0.01),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     return CustomTextField(
                       focusNode: passwordFocusNode,
-                      myController: passwordController,
+                      controller: passwordController,
                       onValidator: (value) {
                         if (passwordController.text.isEmpty ||
                             passwordController.text.length < 6) {
@@ -181,7 +172,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      keyboardType: TextInputType.emailAddress,
                       hint: 'Enter Password',
                       obsecureText: state.isVisible,
                       suffixIcon: IconButton(
