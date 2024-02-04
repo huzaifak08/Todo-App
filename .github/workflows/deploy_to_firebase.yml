@@ -26,6 +26,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Make to android folder
+        run: cd android/
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
