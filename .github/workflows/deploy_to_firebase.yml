@@ -26,6 +26,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Install Gradle
+        run: sudo apt install gradle
+
       - name: Make to android folder
         run: cd android/
 
