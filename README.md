@@ -4,6 +4,10 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 
 ## Methodologies and Steps:
 
+## MVVM Architecture:
+
+--> Model View View-Model.
+
 ### CI/CD:
 
 --> CI/CD using Github Actions
@@ -29,6 +33,7 @@ This is new Flutter and Firebase Project in which we will use purely Bloc State 
 --> Facebook Auth.  
 --> Twitter Auth.  
 --> Routing.
+--> Firebase App Distribution.
 
 ### Bloc:
 

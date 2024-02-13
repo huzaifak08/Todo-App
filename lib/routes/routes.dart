@@ -1,4 +1,6 @@
 import 'package:todo_app/exports.dart';
+import 'package:todo_app/screens/all_chats.dart';
+import 'package:todo_app/screens/chat.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -42,6 +44,16 @@ class Routes {
       case RouteName.profileScreen:
         return MaterialPageRoute(
           builder: (context) => const ProfileScreen(),
+        );
+
+      case RouteName.allChatsScreen:
+        return MaterialPageRoute(
+          builder: (context) => const AllChatsScreen(),
+        );
+
+      case RouteName.chatScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ChatScreen(),
         );
 
       default:

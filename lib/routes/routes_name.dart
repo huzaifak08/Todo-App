@@ -7,4 +7,6 @@ class RouteName {
   static const String addTodoScreen = 'add_todo_screen';
   static const String updateTodoScreen = 'update_todo_screen';
   static const String profileScreen = 'profile_screen';
+  static const String allChatsScreen = 'all_chats_screen';
+  static const String chatScreen = 'chat_screen';
 }

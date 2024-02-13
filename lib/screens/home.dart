@@ -44,6 +44,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
+        actions: [
+          Visibility(
+            visible: true,
+            child: IconButton(
+              onPressed: () {
+                showSecurityCodeDialogue();
+              },
+              icon: const Icon(
+                Icons.feedback,
+                color: AppColors.whiteColor,
+              ),
+            ),
+          )
+        ],
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
@@ -120,6 +134,37 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.of(context, rootNavigator: true)
               .pushNamed(RouteName.addTodoScreen);
         },
+      ),
+    );
+  }
+
+  showSecurityCodeDialogue() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Feedback',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(color: Colors.black),
+        ),
+        content: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Give us your Valuable Feedback.'),
+            TextField(
+              decoration: InputDecoration(labelText: 'Feedback'),
+            ),
+          ],
+        ),
+        actions: [
+          CustomButton(
+            title: 'Submit',
+            onPressed: () {},
+          )
+        ],
       ),
     );
   }
