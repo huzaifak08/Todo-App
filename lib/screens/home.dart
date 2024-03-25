@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     notificationServices.requestNotificationPermission();
 
-    // Token :
+    // Token  :
     notificationServices.getDeviceToken().then((value) {
       debugPrint('Device Token: $value');
       context.read<TodoBloc>().add(SaveToken(token: value));
