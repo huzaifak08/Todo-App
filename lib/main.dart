@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:todo_app/exports.dart';
 import 'package:todo_app/firebase_options.dart';
 import 'package:todo_app/routes/routes.dart';
@@ -5,7 +6,20 @@ import 'package:todo_app/routes/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Notifications:
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Firebase Crashlytics:
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   // if (kIsWeb) {
   //   await Firebase.initializeApp(
@@ -19,6 +33,7 @@ void main() async {
   //   await Firebase.initializeApp();
   // }
 
+  // Firebase App Check:
   FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.instance;
   firebaseAppCheck.activate(androidProvider: AndroidProvider.debug);
   firebaseAppCheck.getToken().then(
